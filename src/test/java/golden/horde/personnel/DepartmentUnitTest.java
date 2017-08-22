@@ -19,6 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -35,12 +36,25 @@ import golden.horde.personnel.domain.Department;
 @SpringBootTest(classes = PersonnelApplication.class)
 @WebAppConfiguration
 //@Ignore
+
+@AutoConfigureMockMvc // для упрощения создания mockMvc
 public class DepartmentUnitTest {
 
-	@Autowired
+	/*@Autowired
 	private WebApplicationContext webApplicationContext;
 
 	private MockMvc mockMvc;
+	
+	@Before
+	public void setup() {
+		this.mockMvc = webAppContextSetup(webApplicationContext)
+				.apply(springSecurity())
+				.build();
+	}
+	*/
+	
+	@Autowired
+    private MockMvc mockMvc;
 	
 	private HttpMessageConverter jsonConverter;
 	
@@ -59,13 +73,6 @@ public class DepartmentUnitTest {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		jsonConverter.write(o, MediaType.APPLICATION_JSON, outputMessage);
 		return outputMessage.getBodyAsString();
-	}
-
-	@Before
-	public void setup() {
-		this.mockMvc = webAppContextSetup(webApplicationContext)
-				.apply(springSecurity())
-				.build();
 	}
 
 	@Test
